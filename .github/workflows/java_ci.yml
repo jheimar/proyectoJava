@@ -22,7 +22,7 @@ jobs:
       with:
         projectBaseDir: proyectoJava
         args: >
-          -Dsonar.organization=Johan H Prieto B
+          -Dsonar.organization='Johan H Prieto B'
           -Dsonar.projectKey=repojheimar
           -Dsonar.python.coverage.reportPaths=coverage.xml
           -Dsonar.sources=lib/
