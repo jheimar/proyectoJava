@@ -20,7 +20,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GIT_TOKEN }}
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       with:
-        projectBaseDir: proyectoJava
+        projectBaseDir: src
         args: >
           -Dsonar.organization=sonarTest
           -Dsonar.projectKey=repojheimar
