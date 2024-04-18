@@ -24,3 +24,8 @@ jobs:
       with:
         name: packaged-jar
         path: target/*.jar
+    - name: Run Maven SonarQube analysis
+      run: mvn clean verify sonar:sonar
+      env:
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }} 
