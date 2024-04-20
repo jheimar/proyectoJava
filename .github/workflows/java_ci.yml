@@ -21,6 +21,8 @@ jobs:
         distribution: 'temurin'
     - name: SonarQube Scan
       uses: SonarSource/sonarqube-scan-action@master
-      env:
-        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        SONAR_HOST_URL: "http://52.179.232.92:9000"
+      with:
+        args: >
+          -Dsonar.projectKey=sonarqubeTest
+          -Dsonar.host.url=${{ secrets.SONAR_HOST_URL }}
+          -Dsonar.login=${{ secrets.SONAR_TOKEN }}
