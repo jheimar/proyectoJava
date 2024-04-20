@@ -25,3 +25,7 @@ jobs:
           -Dsonar.projectKey=sonarqubeTest
           -Dsonar.host.url=${{ secrets.SONAR_HOST_URL }}
           -Dsonar.login=${{ secrets.SONAR_TOKEN }}
+        projectBaseDir: .
+      env:
+        JAVA_HOME: ${{ env.JAVA_HOME_11_X64 }}
+        JAVA_HOME_11_X64: ${{ env.JAVA_HOME_11_X64 }}
