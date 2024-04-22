@@ -6,6 +6,6 @@ public class App {
         int valor1 = 2;
         int valor2 = 5;
         suma = valor1 + valor2;
-        System.out.println("Hola Mundo Maven!");
+        System.out.println("Hola Mundo Maven! "+ suma);
     }
 }
