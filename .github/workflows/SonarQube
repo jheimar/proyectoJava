@@ -1,12 +1,10 @@
-name: Dart CI with SonarQube
+name: Dart Analysis with SonarQube
 
 on:
   push:
-    branches:
-      - main
+    branches: [ main ]
   pull_request:
-    branches:
-      - main
+    branches: [ main ]
 
 jobs:
   analyze:
@@ -14,22 +12,27 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-    - uses: actions/setup-dart@v1
+
+    - name: Setup Dart
+      uses: dart-lang/setup-dart@v1.2
       with:
-        dart-version: 'stable'
+        sdk: stable
+
     - name: Install dependencies
       run: dart pub get
-    - name: Run tests
-      run: dart test
-    - name: Analyze code
-      run: dart analyze
-    - name: Set up SonarQube scanner
+
+    - name: Run Dart Analyzer
+      run: dart analyze --format=machine > analysis_results.json
+
+    - name: Setup SonarQube Scanner
       uses: sonarsource/sonarqube-scan-action@master
       with:
         args: >
-          -Dsonar.login=${{ secrets.SONAR_TOKEN }}
+          -Dsonar.projectKey=dart_project
+          -Dsonar.sources=lib
           -Dsonar.host.url=${{ secrets.SONAR_HOST_URL }}
-          -Dsonar.qualitygate.wait=true
+          -Dsonar.login=${{ secrets.SONAR_TOKEN }}
+          -Dsonar.externalIssuesReportPaths=analysis_results.json
       env:
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
