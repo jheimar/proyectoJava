@@ -1,0 +1,35 @@
+name: Dart CI with SonarQube
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - uses: actions/setup-dart@v1
+      with:
+        dart-version: 'stable'
+    - name: Install dependencies
+      run: dart pub get
+    - name: Run tests
+      run: dart test
+    - name: Analyze code
+      run: dart analyze
+    - name: Set up SonarQube scanner
+      uses: sonarsource/sonarqube-scan-action@master
+      with:
+        args: >
+          -Dsonar.login=${{ secrets.SONAR_TOKEN }}
+          -Dsonar.host.url=${{ secrets.SONAR_HOST_URL }}
+          -Dsonar.qualitygate.wait=true
+      env:
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
