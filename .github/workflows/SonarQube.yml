@@ -1,3 +1,11 @@
+name: Flutter CI with SonarQube
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
 jobs:
   analyze:
     runs-on: ubuntu-latest
@@ -5,19 +13,30 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
-    - name: Setup Dart
-      uses: dart-lang/setup-dart@v1
+    - name: Setup Flutter
+      uses: subosito/flutter-action@v2
       with:
-        sdk: '>=3.0.0 <4.0.0' # Esto instalará la versión correcta de Dart.
+        flutter-version: '3.2.4' # Asegúrate de que esta versión incluya Dart >=3.0.0
 
-    - name: Install dependencies
-      run: dart pub get
+    - name: Get dependencies
+      run: flutter pub get
+
+    - name: Run analyzer
+      run: flutter analyze
+
+    - name: Test
+      run: flutter test
 
     - name: Setup SonarQube Scanner
       uses: sonarsource/sonarqube-scan-action@master
       with:
         args: >
-          -Dsonar.projectKey=sonarqubeTest
-          -Dsonar.sources=lib
+          -Dsonar.projectKey=your_project_key
+          -Dsonar.sources=.
           -Dsonar.host.url=${{ secrets.SONAR_HOST_URL }}
           -Dsonar.login=${{ secrets.SONAR_TOKEN }}
+      env:
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+
+    # Añade otros pasos si necesitas, por ejemplo, construir tu aplicación o más.
