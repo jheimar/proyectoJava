@@ -1,22 +1,23 @@
 jobs:
   analyze:
     runs-on: ubuntu-latest
+
     steps:
     - uses: actions/checkout@v3
+
     - name: Setup Dart
-      uses: dart-lang/setup-dart@v1.2
+      uses: dart-lang/setup-dart@v1
       with:
-        sdk: stable
-    - name: Run Dart Analyzer
-      run: dart analyze
+        sdk: '>=3.0.0 <4.0.0' # Esto instalará la versión correcta de Dart.
+
+    - name: Install dependencies
+      run: dart pub get
+
     - name: Setup SonarQube Scanner
       uses: sonarsource/sonarqube-scan-action@master
       with:
         args: >
-          -Dsonar.projectKey=dart_project
+          -Dsonar.projectKey=sonarqubeTest
           -Dsonar.sources=lib
           -Dsonar.host.url=${{ secrets.SONAR_HOST_URL }}
           -Dsonar.login=${{ secrets.SONAR_TOKEN }}
-      env:
-        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
